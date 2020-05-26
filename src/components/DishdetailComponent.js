@@ -104,7 +104,7 @@ function   Comment({comments , addComment , dishId}){
 function DishDetail(props){
   if(props.isLoading){
     return(<div className="container">
-      <div className="row col-auto">
+      <div className="row offset-6">
         <Loading />
       </div>
     </div>);

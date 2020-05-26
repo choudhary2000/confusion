@@ -8,7 +8,7 @@ import DishDetail from './DishdetailComponent';
 import About from './AboutComponent';
 import Footer from './FooterComponent';
 import { connect } from 'react-redux';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
 
 const mapStatetoProps = (state) => {
   return {dishes: state.dishes,
@@ -19,24 +19,34 @@ const mapStatetoProps = (state) => {
 };
 
 const mapDispachtoProps = dispatch => ({
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+  fetchDishes: () => { dispatch(fetchDishes())}
 });
 
 class Main extends Component{
+
+  componentDidMount(){
+    this.props.fetchDishes();
+  }
+
   render(){
 
     const DishWithId = ({match}) => {
       return(
-        <DishDetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.id,10))[0]}
-        comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.id,10))}
-        addComment = {this.props.addComment}/>
+        <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.id,10))[0]}
+          isLoading={this.props.dishes.isLoading}
+          errmess={this.props.dishes.errmess}
+         comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.id,10))}
+         addComment = {this.props.addComment}/>
       );
     };
 
     const HomePage = () => {
-    return(<Home dish={this.props.dishes.filter((dish) => dish.featured)[0]}
-    promotion={this.props.promotions.filter((prom) => prom.featured)[0]}
-    leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+    return(<Home dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
+      isLoading={this.props.dishes.isLoading}
+      errmess={this.props.dishes.errmess}
+     promotion={this.props.promotions.filter((prom) => prom.featured)[0]}
+     leader={this.props.leaders.filter((leader) => leader.featured)[0]}
   />
   );
   }

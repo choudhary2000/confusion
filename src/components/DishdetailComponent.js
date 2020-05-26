@@ -1,6 +1,7 @@
 import React , { Component} from 'react';
 import {Card,CardImg,CardBody,CardTitle,CardText, Breadcrumb, BreadcrumbItem , Button, Modal, ModalHeader, ModalBody, Row, Label, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 import {LocalForm, Control, Errors} from 'react-redux-form';
 
 const required = (val) => (val) && (val.length);
@@ -101,7 +102,22 @@ function   Comment({comments , addComment , dishId}){
     };
 
 function DishDetail(props){
-  return (
+  if(props.isLoading){
+    return(<div className="container">
+      <div className="row col-auto">
+        <Loading />
+      </div>
+    </div>);
+  }
+  else if(props.errmess){
+    return(<div className="container">
+      <div className="row col-auto">
+          <h3>{props.errmess}</h3>
+      </div>
+    </div>);
+  }
+  else if(props.dish != null){
+    return (
     <div className="container">
       <div className="row">
         <Breadcrumb>
@@ -117,6 +133,7 @@ function DishDetail(props){
       </div>
     </div>
   );
+};
 }
 
 export default DishDetail;

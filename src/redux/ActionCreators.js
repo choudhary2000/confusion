@@ -14,8 +14,22 @@ export const addComment = (dishId, rating, author, comment) => ({
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishLoading(true));
   return fetch(baseUrl + 'dishes')
+  .then(response => {
+    if(response.ok){
+      return response;
+    }
+    else {
+      var error = new Error("Error "+response.status+": "+response.statusText);
+      error.response = response;
+      throw error;
+    }
+  }, error => {
+    var errmess = new Error(error.messag);
+    throw errmess;
+  } )
   .then((response) => response.json())
-  .then((dishes) => dispatch(addDishes(dishes)));
+  .then((dishes) => dispatch(addDishes(dishes)))
+  .catch(error => { dispatch(dishesFailed(error.message))});
 };  // This function is thunk that return function.
 
 export const dishLoading = () => ({type: ActionTypes.DISHES_LOADING});
@@ -31,7 +45,23 @@ export const dishesFailed = (errmess) => ({
 });
 
 export const fetchComments = () => (dispatch) => {
-  return fetch(baseUrl + 'comments').then(response => response.json()).then(comments => dispatch(addComments(comments)));
+  return fetch(baseUrl + 'comments')
+  .then(response => {
+    if(response.ok){
+      return response;
+    }
+    else{
+      var error = new Error('Error '+response.status+': '+response.statusText);
+      error.response = response;
+      throw error;
+    }
+  }, error => {
+    var errmess = new Error(error.message);
+    throw errmess;
+  })
+  .then(response => response.json())
+  .then(comments => dispatch(addComments(comments)))
+  .catch(error => dispatch(commentsFailed(error.message)));
 };  // This function is thunk that return function.
 
 export const addComments = (comments) => ({
@@ -46,7 +76,23 @@ export const commentsFailed = (errmess) => ({
 
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading(true));
-  return fetch(baseUrl + 'promotions').then(response => response.json()).then(promotions => dispatch(addPromos(promotions)));
+  return fetch(baseUrl + 'promotions')
+  .then(response => {
+    if(response.ok){
+      return response;
+    }
+    else{
+      var error = new Error('Error '+response.status+': '+response.statusText);
+      error.response =response;
+      throw error;
+    }
+  },error => {
+    var errmess = new Error(error.message);
+    throw errmess;
+  })
+  .then(response => response.json())
+  .then(promotions => dispatch(addPromos(promotions)))
+  .catch(error => { dispatch(promsoFailed(error.message))});
 };  // This function is thunk that return function.
 
 export const promosLoading = () => ({type: ActionTypes.PROMOS_LOADING});

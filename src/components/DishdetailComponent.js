@@ -23,7 +23,7 @@ class CommentForm extends Component {
   };
 
   handleSubmit(values){
-    this.props.addComment(this.props.dishId, values.rating, values.yourname, values.comment);
+    this.props.postComment(this.props.dishId, values.rating, values.yourname, values.comment);
   }
 
 
@@ -90,7 +90,7 @@ function Dish({dish}){
     </div>
     );
   };
-function   Comment({comments , addComment , dishId}){
+function   Comment({comments , postComment , dishId}){
       return(
         <div className="col-12 col-md-5 m-1">
           <ul className="list-unstyled">
@@ -98,7 +98,7 @@ function   Comment({comments , addComment , dishId}){
               return(<li key={x.id} className="mt-2"> {x.comment}<br /> -- {x.author}, {new Intl.DateTimeFormat('en-US',{year:'numeric',month:'short',day:'2-digit'}).format(new Date(x.date))}</li>
             );})}
           </ul>
-          <CommentForm dishId={dishId} addComment={addComment} />
+          <CommentForm dishId={dishId} postComment={postComment} />
         </div>);
     };
 
@@ -110,10 +110,10 @@ function DishDetail(props){
       </div>
     </div>);
   }
-  else if(props.errmess){
+  else if(props.dishesErrmess ){
     return(<div className="container">
       <div className="row col-auto">
-          <h3>{props.errmess}</h3>
+          <h3>{props.dishesErrmess}</h3>
       </div>
     </div>);
   }
@@ -130,7 +130,7 @@ function DishDetail(props){
       </div>
       <div className="row">
         <Dish dish={props.dish} />
-        <Comment comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
+        <Comment comments={props.comments} postComment={props.postComment} dishId={props.dish.id}/>
       </div>
     </div>
   );

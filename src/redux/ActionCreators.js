@@ -41,6 +41,46 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
             .catch(error => {console.log("Post comments ", error.message);
                               alert('Your comment could not be posted\nError: '+error.message);})
 }
+//////////Post Comment to the Server/////////////////////
+
+export const postFeedBack = () => (dispatch, getState) => {
+  var state = getState();
+  var newFeedback = {
+    firstname: state.feedback.firstname ,
+    lastname: state.feedback.lastname,
+    telnum: state.feedback.telnum,
+    email: state.feedback.email,
+    agree: state.feedback.agree,
+    contactType: state.feedback.contactType,
+    message: state.feedback.message
+  }
+  newFeedback.date = new Date().toISOString();
+  return fetch(baseUrl + 'feedback',{
+    method: 'POST',
+    body: JSON.stringify(newFeedback),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "same-origin"
+  }).then(response => {
+    if(response.ok){
+      return response;
+    }
+    else {
+      var error = new Error('Error '+response.status+': '+response.statusText);
+      throw error;
+    }
+  },error => {
+    var errMess = new Error(error.message);
+    throw errMess;
+  }).then(response => response.json())
+    .then(response => alert('Thank you for your feedback' + JSON.stringify(response)))
+    .catch(error => {
+      console.log('Post feedbacks', error.message);
+      alert('Your feedback could not be posted\nError: '+ error.message);
+    });
+}
+
 
 ////////////Fetch Dishes///////////////////
 export const fetchDishes = () => (dispatch) => {

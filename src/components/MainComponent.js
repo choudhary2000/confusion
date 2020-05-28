@@ -66,7 +66,7 @@ class Main extends Component{
 
   const  AboutPage = () => {
     return(
-      <About leaders={this.props.leaders} />
+      <About leaders={this.props.leaders.leaders} />
     );
   }
     return (

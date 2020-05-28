@@ -6,6 +6,8 @@ export const addComment = (comment) => ({
   payload: comment
 });
 
+
+/////////////////Post Comments To server////////////////
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
   const newComment = {
     dishId: dishId,
@@ -40,6 +42,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
                               alert('Your comment could not be posted\nError: '+error.message);})
 }
 
+////////////Fetch Dishes///////////////////
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishLoading(true));
   return fetch(baseUrl + 'dishes')
@@ -73,6 +76,7 @@ export const dishesFailed = (errmess) => ({
   payload: errmess
 });
 
+//////////////fetch Comments///////////////////
 export const fetchComments = () => (dispatch) => {
   return fetch(baseUrl + 'comments')
   .then(response => {
@@ -103,6 +107,7 @@ export const commentsFailed = (errmess) => ({
   payload: errmess
 });
 
+//////////////////Fetch Promotions//////////////////////
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading(true));
   return fetch(baseUrl + 'promotions')
@@ -134,4 +139,34 @@ export const addPromos = (promotions) => ({
 export const promsoFailed = (errmess) => ({
   type: ActionTypes.PROMOS_FAILED,
   payload: errmess
+});
+
+/////////////Fetch Leaders//////////////
+
+export const fetchLeaders = () => (dispatch) => {
+  dispatch(loadingLeader(true));
+  return fetch(baseUrl + 'leaders').then(response => {
+    if(response.ok){
+      return response.json();
+    }
+    else {
+      var error = new Error('Error '+response.status+': '+response.statusText);
+      throw error;
+    }
+  }).then(response => {dispatch(addLeader(response))})
+    .catch(error => {dispatch(loadingFailed(error.message))});
+}
+
+export const loadingLeader = () => ({
+  type: ActionTypes.LEADERS_LOADING
+});
+
+export const loadingFailed = (message) => ({
+  type: ActionTypes.LEADERS_FAILED,
+  payload: message
+});
+
+export const addLeader = (message) => ({
+  type: ActionTypes.ADD_LEADERS,
+  payload: message
 });

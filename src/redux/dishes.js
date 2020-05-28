@@ -1,5 +1,8 @@
 import * as ActionTypes from './ActionTypes';
-export const Dishes = (state = { isLoading: true , errmess: null , dishes: []} , action) => {
+export const Dishes = (state =
+   { isLoading: true ,
+      errmess: null ,
+      dishes: []} , action) => {
   switch (action.type) {
     case ActionTypes.DISHES_LOADING:
       return {...state , isLoading: true, errmess: null, dishes: []};

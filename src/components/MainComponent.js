@@ -10,7 +10,7 @@ import DishDetail from './DishdetailComponent';
 import About from './AboutComponent';
 import Footer from './FooterComponent';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchPromos, fetchComments } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchPromos, fetchComments, fetchLeaders } from '../redux/ActionCreators';
 
 const mapStatetoProps = (state) => {
   return {dishes: state.dishes,
@@ -25,6 +25,7 @@ const mapDispachtoProps = (dispatch) => ({
   fetchDishes: () => { dispatch(fetchDishes())},
   fetchPromos: () => { dispatch(fetchPromos())},
   fetchComments: () => { dispatch(fetchComments())},
+  fetchLeaders: () => { dispatch(fetchLeaders())},
   resetFeedbackForm: () => { dispatch(actions.reset('feedback'))}
 });
 
@@ -34,10 +35,10 @@ class Main extends Component{
     this.props.fetchDishes();
     this.props.fetchPromos();
     this.props.fetchComments();
+    this.props.fetchLeaders();
   }
 
   render(){
-
     const DishWithId = ({match}) => {
       return(
         <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.id,10))[0]}
@@ -56,7 +57,9 @@ class Main extends Component{
       promotion={this.props.promotions.promotions.filter((prom) => prom.featured)[0]}
       promotionsLoading={this.props.promotions.isLoading}
       promotionsErrmess={this.props.promotions.errmess}
-     leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+      leaders={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+      leadersLoading={this.props.leaders.isLoading}
+      leadersErrmess={this.props.leaders.errmess}
   />
   );
   }
@@ -66,7 +69,6 @@ class Main extends Component{
       <About leaders={this.props.leaders} />
     );
   }
-
     return (
       <div>
         <Header />

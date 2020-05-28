@@ -37,3 +37,26 @@ h6{
   height: 7em;
   width: 7em;
 }
+
+
+.page-enter {
+    opacity: 1;
+    transform: translateX(-100%);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: all 300ms ease-in;
+}
+
+.page-exit {
+    opacity: 1;
+    transform: translateX(0%);
+}
+
+.page-exit-active {
+    opacity: 1;
+    transform: translateX(100%);
+    transition: all 300ms ease-out;
+}
